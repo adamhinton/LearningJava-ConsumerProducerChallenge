@@ -1,15 +1,39 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+package dev.lpa;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+import java.util.Random;
+
+record Order(long orderId, String item, int qty) {
+};
+
+public class Main {
+
+    private static final Random random = new Random();
+
+    public static void main(String[] args) {
+
+        ShoeWarehouse warehouse = new ShoeWarehouse();
+
+        Thread producerThread = new Thread(() ->{
+
+            // Ten random orders
+           for (int j=0; j<10; j++){
+               warehouse.receiveOrder(new Order(
+                       random.nextLong(1000000, 9999999),
+                       ShoeWarehouse.PRODUCT_LIST[random.nextInt(0, 5)],
+                       // bw 1-3
+                       random.nextInt(1, 4)));
+           }
+        });
+        producerThread.start();
+
+
+        for (int i=0; i<2; i++){
+            Thread consumerThread = new Thread(()->{
+                for (int j=0; j<5; j++){
+                    Order item = warehouse.fulfillOrder();
+                }
+            });
+            consumerThread.start();
         }
     }
 }
