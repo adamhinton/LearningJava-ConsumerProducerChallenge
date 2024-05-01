@@ -17,27 +17,15 @@ public class Main {
 
         ShoeWarehouse warehouse = new ShoeWarehouse();
 
-        Thread producerThread = new Thread(() ->{
 
-            // Ten random orders
-           for (int j=0; j<10; j++){
-               warehouse.receiveOrder(new Order(
-                       random.nextLong(1000000, 9999999),
-                       ShoeWarehouse.PRODUCT_LIST[random.nextInt(0, 5)],
-                       // bw 1-3
-                       random.nextInt(1, 4)));
-           }
-        });
-        producerThread.start();
+    }
 
 
-        for (int i=0; i<2; i++){
-            Thread consumerThread = new Thread(()->{
-                for (int j=0; j<5; j++){
-                    Order item = warehouse.fulfillOrder();
-                }
-            });
-            consumerThread.start();
-        }
+    private static Order generateOrder(){
+        return new Order(
+                random.nextLong(1000000, 9999999),
+                ShoeWarehouse.PRODUCT_LIST[random.nextInt(0, 5)],
+                // bw 1-3
+                random.nextInt(1, 4));
     }
 }
