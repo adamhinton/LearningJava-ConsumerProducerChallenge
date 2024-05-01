@@ -5,6 +5,10 @@ import java.util.Random;
 record Order(long orderId, String item, int qty) {
 };
 
+// Add an ES to main to send orders to warehouse
+// add ES to SW which will fulfill orders
+// Create and fulfill 15 shoe orders
+
 public class Main {
 
     private static final Random random = new Random();
